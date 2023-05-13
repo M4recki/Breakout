@@ -1,6 +1,7 @@
 from turtle import Turtle
 from time import sleep
 
+
 class Ball(Turtle):
     def __init__(self, x_pos, y_pos=-290):
         super().__init__()

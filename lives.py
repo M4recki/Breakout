@@ -19,7 +19,7 @@ class Lives(Turtle):
         for i in range(self.lives):
             self.goto(x_pos, y_pos)
             self.stamp()
-            x_pos += 50
+            x_pos += 40
             
     def lose_live(self):
         self.clear()

@@ -6,7 +6,7 @@ from lives import Lives
 from time import sleep
 
 s = Screen()
-s.setup(width=700., height=700)
+s.setup(width=700, height=700)
 s.bgcolor('black')
 s.title('Breakout game by Marek Baranski')
 s.tracer(0)
@@ -17,17 +17,13 @@ s.listen()
 s.onkey(paddle.go_right, 'd')
 s.onkey(paddle.go_left, 'a')
 
-rectangles = Rectangles()
-
 ball = Ball(x_pos=paddle.xcor())
+
+rectangles = Rectangles()
 
 lives = Lives()
 
 continue_game = True
-
-# FIXME: Fix paddle hitbox
-# FIXME: Fix bounce on rectangles
-# FIXME: Fix ball bouncing off the wall
 
 while continue_game:
     sleep(ball.move_speed)
@@ -35,16 +31,17 @@ while continue_game:
     ball.move_ball()
 
     # Check for collision with rectangles
-    for rectangle in rectangles.rectangles_list:
+    for i, rectangle in enumerate(rectangles.rectangles_list):
         if ball.distance(rectangle) < 20:
-            rectangles.rectangles_list.remove(rectangle)
-            rectangle.hideturtle()
-
-            # Check which side of the rectangle the ball hit
-            if ball.xcor() < rectangle.xcor() - 30 or ball.xcor() > rectangle.xcor() + 30:
+            print(rectangle)
+            rectangles.rectangles_list.pop(i)
+            del rectangle
+            if abs(ball.xcor() - rectangle.xcor()) > 30:
                 ball.bounce_ball_x_pos()
             else:
                 ball.bounce_ball_y_pos()
+            rectangles.rectangles_list.remove(rectangle)
+            rectangle.hideturtle()
 
     if ball.xcor() > 320 or ball.xcor() < -320:
         ball.bounce_ball_x_pos()
@@ -52,7 +49,7 @@ while continue_game:
     if ball.ycor() > 320:
         ball.bounce_ball_y_pos()
 
-    if ball.distance(paddle) < 20 and abs(ball.ycor() - paddle.ycor()) < 20:
+    if ball.distance(paddle) < 90 and abs(ball.ycor() - paddle.ycor()) < 50 - paddle.shapesize()[1]*10/2:
         ball.bounce_ball_y_pos()
 
     if ball.ycor() < -380:
@@ -60,3 +57,6 @@ while continue_game:
         lives.lose_live()
 
 s.exitonclick()
+
+#FIXME: Fix interaction with ball and rectangle
+#TODO: Add scoreboard
