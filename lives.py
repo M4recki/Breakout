@@ -1,7 +1,6 @@
 from turtle import Turtle
 
-pos = 'center'
-font = ('Segoe UI Black', 70, 'normal')
+font = ("Segoe UI Black", 24, "normal")
 
 class Lives(Turtle):
     def __init__(self):
@@ -14,7 +13,12 @@ class Lives(Turtle):
         self.show_lives()
         
     def show_lives(self):
-        x_pos = -300
+        self.color("red")
+        self.penup()
+        self.goto(-320, 300)
+        self.hideturtle()
+        self.write("Lives: ", font=font)
+        x_pos = -200
         y_pos = 320
         for i in range(self.lives):
             self.goto(x_pos, y_pos)
