@@ -11,10 +11,10 @@ class Paddle(Turtle):
 
     def go_right(self):
         new_x = self.xcor() + 20
-        if new_x < 350:
+        if new_x < 275:
             self.goto(new_x, self.ycor())
 
     def go_left(self):
         new_x = self.xcor() - 20
-        if new_x > -350:
+        if new_x > -275:
             self.goto(new_x, self.ycor())

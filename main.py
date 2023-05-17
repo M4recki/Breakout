@@ -5,6 +5,7 @@ from ball import Ball
 from lives import Lives
 from scoreboard import Scoreboard
 from time import sleep
+import sys
 
 s = Screen()
 s.setup(width=700, height=700)
@@ -31,14 +32,17 @@ continue_game = True
 
 
 def game():
+    global continue_game
     while continue_game:
         sleep(ball.move_speed)
         s.update()
         ball.move_ball()
+        scoreboard.clear()
+        scoreboard.hideturtle()
 
         # Check for collision with rectangles
         for rectangle in rectangles.rectangles_list:
-            if ball.distance(rectangle) < 40:
+            if ball.distance(rectangle) < 41:
                 rectangle.clear()
                 rectangle.hideturtle()
                 rectangles.rectangles_list.remove(rectangle)
@@ -47,6 +51,7 @@ def game():
                 else:
                     ball.bounce_ball_y_pos()
 
+        # Check collision with walls
         if ball.xcor() > 320 or ball.xcor() < -320:
             ball.bounce_ball_x_pos()
 
@@ -60,12 +65,29 @@ def game():
             ball.reset_ball(x_pos=paddle.xcor())
             lives.lose_live()
 
+        if len(rectangles.rectangles_list) == 0:
+            scoreboard.game_over(result="won")
+            continue_game = False
+
+            if s.onkeypress(game, "Return"):
+                game()
+            elif s.onkeypress(sys.exit, "q"):
+                sys.exit()
+
+        if lives.lives == 0:
+            scoreboard.game_over(result="lost")
+            continue_game = False
+
+            if s.onkeypress(game, "Return"):
+                game()
+            elif s.onkeypress(sys.exit, "q"):
+                sys.exit()
+
 
 if s.onkeypress(game, "Return"):
-    scoreboard.start_game()
     game()
+elif s.onkeypress(sys.exit, "q"):
+    sys.exit()
 
 
 s.mainloop()
-
-# TODO: Add scoreboard
